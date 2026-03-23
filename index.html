@@ -6,67 +6,31 @@
 <title>Dachbox Verfügbarkeit & Preis</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 15px;
-  color: #1a1a1a;
-  background: transparent;
-  padding: 0;
-}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; color: #1a1a1a; background: transparent; }
 .widget { max-width: 520px; margin: 0 auto; padding: 8px 4px 16px; }
 .widget-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; color: #1B2A6B; }
 .widget-sub { font-size: 13px; color: #666; margin-bottom: 20px; }
 .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 6px; }
 .field-group { display: flex; flex-direction: column; gap: 5px; }
 label { font-size: 12px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.04em; }
-input[type="date"] {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1.5px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #1a1a1a;
-  background: #fff;
-  outline: none;
-  transition: border-color 0.15s;
-}
+input[type="date"] { width: 100%; padding: 10px 12px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; color: #1a1a1a; background: #fff; outline: none; transition: border-color 0.15s; }
 input[type="date"]:focus { border-color: #1B2A6B; }
 .day-hint { font-size: 11px; color: #888; min-height: 16px; padding-left: 2px; margin-bottom: 8px; }
-.btn-pruefen {
-  width: 100%;
-  padding: 12px;
-  background: #1B2A6B;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-bottom: 12px;
-  transition: opacity 0.15s;
-}
+.btn-pruefen { width: 100%; padding: 12px; background: #1B2A6B; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 12px; transition: opacity 0.15s; }
 .btn-pruefen:hover { opacity: 0.88; }
-.btn-pruefen:disabled { background: #ccc; cursor: default; }
-.status-box {
-  border-radius: 8px;
-  padding: 11px 14px;
-  font-size: 13px;
-  line-height: 1.55;
-  margin-bottom: 12px;
-  display: none;
-  border: 1.5px solid transparent;
-}
+.btn-pruefen:disabled { background: #ccc; cursor: default; opacity: 1; }
+.status-box { border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.55; margin-bottom: 12px; display: none; border: 1.5px solid transparent; }
 .status-box.show { display: block; }
 .s-loading { background: #f5f5f0; color: #555; border-color: #ddd; }
-.s-ok { background: #e8f7f1; color: #0a6644; border-color: #7ed4b0; }
+.s-ok  { background: #e8f7f1; color: #0a6644; border-color: #7ed4b0; }
 .s-low { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
-.s-no { background: #fde8e8; color: #8b1a1a; border-color: #f5a5a5; }
+.s-no  { background: #fde8e8; color: #8b1a1a; border-color: #f5a5a5; }
 .s-sun { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
-.s-err { background: #f5f5f0; color: #666; border-color: #ddd; }
+.s-err { background: #f5f5f0; color: #666;    border-color: #ddd; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: middle; position: relative; top: -1px; }
-.dot-ok { background: #1D9E75; }
+.dot-ok  { background: #1D9E75; }
 .dot-low { background: #e08a00; }
-.dot-no { background: #c0392b; }
+.dot-no  { background: #c0392b; }
 .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid #bbb; border-top-color: #555; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 7px; position: relative; top: -1px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .price-card { background: #f8f8f5; border: 1.5px solid #e5e5e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; display: none; }
@@ -104,19 +68,19 @@ input[type="date"]:focus { border-color: #1B2A6B; }
   </div>
 
   <button class="btn-pruefen" id="btn-pruefen" onclick="checkAvail()" disabled>
-    Verfügbarkeit & Preis prüfen
+    Verfügbarkeit &amp; Preis prüfen
   </button>
 
   <div class="status-box s-loading" id="s-loading"><span class="spinner"></span>Verfügbarkeit wird geprüft …</div>
-  <div class="status-box s-sun" id="s-sun">Sonntage sind für Abholung und Rückgabe nicht möglich. Bitte einen anderen Tag wählen.</div>
-  <div class="status-box s-ok" id="s-ok"><span class="dot dot-ok"></span><strong>Dachbox verfügbar.</strong> Für diesen Zeitraum ist eine Dachbox frei.</div>
-  <div class="status-box s-low" id="s-low"><span class="dot dot-low"></span><span id="s-low-text"></span></div>
-  <div class="status-box s-no" id="s-no"><span class="dot dot-no"></span><strong>Keine Dachbox frei.</strong> Für diesen Zeitraum sind leider alle Dachboxen vergeben. Bitte einen anderen Zeitraum wählen.</div>
-  <div class="status-box s-err" id="s-err">Verfügbarkeit konnte nicht geprüft werden. Bitte direkt anfragen: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e68f888089a68287858e84899e8f8881c88283">[email&#160;protected]</a></strong></div>
+  <div class="status-box s-sun"     id="s-sun">Sonntage sind für Abholung und Rückgabe nicht möglich. Bitte einen anderen Tag wählen.</div>
+  <div class="status-box s-ok"      id="s-ok"><span class="dot dot-ok"></span><strong>Dachbox verfügbar.</strong> Für diesen Zeitraum ist eine Dachbox frei.</div>
+  <div class="status-box s-low"     id="s-low"><span class="dot dot-low"></span><span id="s-low-text"></span></div>
+  <div class="status-box s-no"      id="s-no"><span class="dot dot-no"></span><strong>Keine Dachbox frei.</strong> Für diesen Zeitraum sind leider alle Dachboxen vergeben. Bitte einen anderen Zeitraum wählen.</div>
+  <div class="status-box s-err"     id="s-err">Verfügbarkeit konnte nicht geprüft werden. Bitte direkt anfragen: <strong>info@dachboxing.de</strong></div>
 
   <div class="price-card" id="price-card">
     <div class="price-line"><span>Mietdauer</span><span id="p-days">—</span></div>
-    <div class="price-line"><span>Mietpreis (inkl. Montage & Demontage)</span><span id="p-base">—</span></div>
+    <div class="price-line"><span>Mietpreis (inkl. Montage &amp; Demontage)</span><span id="p-base">—</span></div>
     <hr class="price-divider">
     <div class="price-total">
       <span class="price-total-label">Gesamtpreis</span>
@@ -134,8 +98,8 @@ input[type="date"]:focus { border-color: #1B2A6B; }
   </a>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwpIANvmvBZTnwsEICXvNeu6CglCSK2ilvDYkCRO5AGhROsD5nix9BgP3UQwjPahtm1/exec';
+<script>
+const WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbwpIANvmvBZTnwsEICXvNeu6CglCSK2ilvDYkCRO5AGhROsD5nix9BgP3UQwjPahtm1/exec';
 const FILLOUT_URL = 'https://forms.fillout.com/t/tqg392xLGnus';
 const PREISE = {1:69,2:69,3:69,4:75,5:75,6:80,7:85,8:90,9:95,10:100,11:105,12:110,13:115,14:120};
 const WOCHENTAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -163,10 +127,13 @@ function fmtDate(s) {
   return WOCHENTAGE[d.getDay()] + ', ' + d.getDate() + '. ' + MONATE[d.getMonth()] + ' ' + d.getFullYear();
 }
 
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
 function hideAll() {
-  ['s-loading','s-sun','s-ok','s-low','s-no','s-err','price-card','notice'].forEach(id => {
-    const el = document.getElementById(id);
-    el.classList.remove('show');
+  ['s-loading','s-sun','s-ok','s-low','s-no','s-err','price-card','notice'].forEach(function(id) {
+    document.getElementById(id).classList.remove('show');
   });
   document.getElementById('btn-anfrage').classList.remove('show');
 }
@@ -176,55 +143,66 @@ function show(id) {
 }
 
 function onDateInput() {
-  const von = document.getElementById('von').value;
-  const bis = document.getElementById('bis').value;
+  var von = document.getElementById('von').value;
+  var bis = document.getElementById('bis').value;
+  var btn = document.getElementById('btn-pruefen');
+
+  // Hint-Texte
   document.getElementById('hint-von').textContent = von ? fmtDate(von) : '';
   document.getElementById('hint-bis').textContent = bis ? fmtDate(bis) : '';
 
-  // Rückgabedatum minimum = Mietbeginn + 1 Tag
+  // Rückgabedatum-Minimum = Mietbeginn + 1 Tag
   if (von) {
-    const minBis = new Date(parseD(von).getTime() + 86400000).toISOString().split('T')[0];
+    var minBis = new Date(parseD(von).getTime() + 86400000).toISOString().split('T')[0];
     document.getElementById('bis').min = minBis;
+    // Falls Rückgabe vor oder gleich Mietbeginn → zurücksetzen
     if (bis && bis <= von) {
       document.getElementById('bis').value = '';
       document.getElementById('hint-bis').textContent = '';
+      bis = '';
     }
   }
 
   hideAll();
-  const btn = document.getElementById('btn-pruefen');
-  if (von && bis && !isSunday(von) && !isSunday(bis) && daysBetween(von, bis) >= 1) {
-    btn.disabled = false;
+
+  if (von && bis && daysBetween(von, bis) >= 1) {
+    if (isSunday(von) || isSunday(bis)) {
+      show('s-sun');
+      btn.disabled = true;
+    } else {
+      btn.disabled = false;
+    }
   } else {
     btn.disabled = true;
-    if (von && bis && (isSunday(von) || isSunday(bis))) show('s-sun');
   }
 }
 
 async function checkAvail() {
-  const von = document.getElementById('von').value;
-  const bis = document.getElementById('bis').value;
+  var von = document.getElementById('von').value;
+  var bis = document.getElementById('bis').value;
+  var btn = document.getElementById('btn-pruefen');
+
   if (!von || !bis) return;
-  const tage = daysBetween(von, bis);
+  var tage = daysBetween(von, bis);
   if (tage < 1) return;
 
   hideAll();
   show('s-loading');
-  document.getElementById('btn-pruefen').disabled = true;
+  btn.disabled = true;
 
   try {
-    const resp = await fetch(WEBAPP_URL + '?von=' + von + '&bis=' + bis);
+    var resp = await fetch(WEBAPP_URL + '?von=' + von + '&bis=' + bis);
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
+    var data = await resp.json();
     if (data.error) throw new Error(data.error);
 
-    const frei = data.frei;
+    var frei = data.frei;
     hideAll();
 
     if (frei <= 0) {
       show('s-no');
     } else {
-      const preis = getPreis(tage);
+      var preis = getPreis(tage);
       document.getElementById('p-days').textContent = tage + (tage === 1 ? ' Tag' : ' Tage');
       document.getElementById('p-base').textContent = preis.toFixed(2).replace('.', ',') + ' €';
       document.getElementById('p-total').textContent = preis.toFixed(2).replace('.', ',') + ' €';
@@ -238,7 +216,7 @@ async function checkAvail() {
       }
 
       show('notice');
-      const anfBtn = document.getElementById('btn-anfrage');
+      var anfBtn = document.getElementById('btn-anfrage');
       anfBtn.href = FILLOUT_URL + '?von=' + von + '&bis=' + bis;
       anfBtn.classList.add('show');
     }
@@ -248,4 +226,15 @@ async function checkAvail() {
     console.warn('Fehler:', e);
   }
 
-  document.getElementById('btn-pruefen').disabled =
+  btn.disabled = false;
+}
+
+// Mindestdatum beim Laden setzen
+(function() {
+  var t = today();
+  document.getElementById('von').min = t;
+  document.getElementById('bis').min = t;
+})();
+</script>
+</body>
+</html>
