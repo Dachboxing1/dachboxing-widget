@@ -185,7 +185,6 @@ function onDateInput() {
   if (von) {
     const minBis = new Date(parseD(von).getTime() + 86400000).toISOString().split('T')[0];
     document.getElementById('bis').min = minBis;
-    // Falls bereits gewähltes Rückgabedatum vor Mietbeginn liegt → zurücksetzen
     if (bis && bis <= von) {
       document.getElementById('bis').value = '';
       document.getElementById('hint-bis').textContent = '';
