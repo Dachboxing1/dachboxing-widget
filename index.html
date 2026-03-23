@@ -76,7 +76,7 @@ input[type="date"]:focus { border-color: #1B2A6B; }
   <div class="status-box s-ok"      id="s-ok"><span class="dot dot-ok"></span><strong>Dachbox verfügbar.</strong> Für diesen Zeitraum ist eine Dachbox frei.</div>
   <div class="status-box s-low"     id="s-low"><span class="dot dot-low"></span><span id="s-low-text"></span></div>
   <div class="status-box s-no"      id="s-no"><span class="dot dot-no"></span><strong>Keine Dachbox frei.</strong> Für diesen Zeitraum sind leider alle Dachboxen vergeben. Bitte einen anderen Zeitraum wählen.</div>
-  <div class="status-box s-err"     id="s-err">Verfügbarkeit konnte nicht geprüft werden. Bitte direkt anfragen: <strong>info@dachboxing.de</strong></div>
+  <div class="status-box s-err"     id="s-err">Verfügbarkeit konnte nicht geprüft werden. Bitte direkt anfragen: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="94fdfaf2fbd4f0f5f7fcf6fbecfdfaf3baf0f1">[email&#160;protected]</a></strong></div>
 
   <div class="price-card" id="price-card">
     <div class="price-line"><span>Mietdauer</span><span id="p-days">—</span></div>
@@ -98,8 +98,8 @@ input[type="date"]:focus { border-color: #1B2A6B; }
   </a>
 </div>
 
-<script>
-const WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbwpIANvmvBZTnwsEICXvNeu6CglCSK2ilvDYkCRO5AGhROsD5nix9BgP3UQwjPahtm1/exec';
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbzSh8bx5vl7H2K5h9sD0aw1SR2aHALunLJNaBaFazgJbYHvylaHDJLGF8BeVPJXtFjG/exec';
 const FILLOUT_URL = 'https://forms.fillout.com/t/tqg392xLGnus';
 const PREISE = {1:69,2:69,3:69,4:75,5:75,6:80,7:85,8:90,9:95,10:100,11:105,12:110,13:115,14:120};
 const WOCHENTAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -223,18 +223,4 @@ async function checkAvail() {
   } catch(e) {
     hideAll();
     show('s-err');
-    console.warn('Fehler:', e);
-  }
-
-  btn.disabled = false;
-}
-
-// Mindestdatum beim Laden setzen
-(function() {
-  var t = today();
-  document.getElementById('von').min = t;
-  document.getElementById('bis').min = t;
-})();
-</script>
-</body>
-</html>
+    console.warn('
