@@ -3,34 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dachbox Verfuegbarkeit</title>
+<title>Dachbox Verfügbarkeit</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; color: #1a1a1a; background: transparent; }
 .widget { max-width: 520px; margin: 0 auto; padding: 8px 4px 16px; }
 .widget-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; color: #1B2A6B; }
-.widget-sub { font-size: 13px; color: #666; margin-bottom: 20px; }
+.widget-sub { font-size: 13px; color: #666; margin-bottom: 16px; }
+.section-label { font-size: 12px; font-weight: 600; color: #1B2A6B; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 2px solid #1B2A6B; }
 .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 6px; }
-.field-group { display: flex; flex-direction: column; gap: 5px; }
+.field-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
 label { font-size: 12px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.04em; }
-input[type="date"] { width: 100%; padding: 10px 12px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; color: #1a1a1a; background: #fff; outline: none; transition: border-color 0.15s; }
-input[type="date"]:focus { border-color: #1B2A6B; }
-.day-hint { font-size: 11px; color: #888; min-height: 16px; padding-left: 2px; margin-bottom: 8px; }
-.btn-pruefen { width: 100%; padding: 12px; background: #1B2A6B; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 12px; transition: opacity 0.15s; }
+input[type="date"], select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid #ddd; border-radius: 8px;
+  font-size: 14px; color: #1a1a1a; background: #fff; outline: none;
+  transition: border-color 0.15s; appearance: none;
+}
+input[type="date"]:focus, select:focus { border-color: #1B2A6B; }
+select:disabled { background: #f5f5f5; color: #999; cursor: not-allowed; }
+.day-hint { font-size: 11px; color: #888; min-height: 16px; padding-left: 2px; margin-bottom: 4px; }
+.divider { height: 1px; background: #eee; margin: 14px 0; }
+.btn-pruefen {
+  width: 100%; padding: 12px; background: #1B2A6B; color: #fff;
+  font-size: 14px; font-weight: 600; border: none; border-radius: 8px;
+  cursor: pointer; margin-bottom: 12px; transition: opacity 0.15s;
+}
 .btn-pruefen:hover { opacity: 0.88; }
 .btn-pruefen:disabled { background: #ccc; cursor: default; opacity: 1; }
+.btn-manuell {
+  width: 100%; padding: 10px; background: transparent; color: #666;
+  font-size: 13px; border: 1.5px dashed #ccc; border-radius: 8px;
+  cursor: pointer; margin-bottom: 12px; transition: all 0.15s;
+}
+.btn-manuell:hover { border-color: #1B2A6B; color: #1B2A6B; }
 .status-box { border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.55; margin-bottom: 12px; display: none; border: 1.5px solid transparent; }
 .status-box.show { display: block; }
 .s-loading { background: #f5f5f0; color: #555; border-color: #ddd; }
-.s-ok  { background: #e8f7f1; color: #0a6644; border-color: #7ed4b0; }
-.s-low { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
-.s-no  { background: #fde8e8; color: #8b1a1a; border-color: #f5a5a5; }
-.s-sun { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
-.s-err { background: #f5f5f0; color: #666;    border-color: #ddd; }
+.s-ok      { background: #e8f7f1; color: #0a6644; border-color: #7ed4b0; }
+.s-low     { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
+.s-no      { background: #fde8e8; color: #8b1a1a; border-color: #f5a5a5; }
+.s-sun     { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
+.s-warn    { background: #fef3e2; color: #7a4800; border-color: #f5c56a; }
+.s-err     { background: #f5f5f0; color: #666;    border-color: #ddd; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: middle; position: relative; top: -1px; }
 .dot-ok  { background: #1D9E75; }
 .dot-low { background: #e08a00; }
 .dot-no  { background: #c0392b; }
+.dot-warn{ background: #e08a00; }
 .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid #bbb; border-top-color: #555; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 7px; position: relative; top: -1px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .price-card { background: #f8f8f5; border: 1.5px solid #e5e5e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; display: none; }
@@ -41,19 +60,26 @@ input[type="date"]:focus { border-color: #1B2A6B; }
 .price-total-label { font-size: 15px; font-weight: 600; color: #1a1a1a; }
 .price-total-value { font-size: 20px; font-weight: 700; color: #1B2A6B; }
 .price-note { font-size: 11.5px; color: #888; margin-top: 8px; line-height: 1.5; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: 6px; vertical-align: middle; }
+.badge-verbindlich  { background: #C6EFCE; color: #276221; }
+.badge-unverbindlich{ background: #FFF2CC; color: #7a4800; }
 .notice { font-size: 12px; color: #666; line-height: 1.6; padding: 10px 14px; background: #f0f7ff; border-radius: 8px; border: 1px solid #c8dff5; margin-bottom: 14px; display: none; }
 .notice.show { display: block; }
 .notice strong { color: #1a4a7a; }
-.btn-anfrage { display: none; width: 100%; padding: 13px; background: #1D9E75; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; text-align: center; text-decoration: none; transition: opacity 0.15s; }
+.btn-anfrage { display: none; width: 100%; padding: 13px; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; text-align: center; text-decoration: none; transition: opacity 0.15s; }
 .btn-anfrage.show { display: block; }
 .btn-anfrage:hover { opacity: 0.88; }
+.btn-anfrage.verbindlich   { background: #1D9E75; }
+.btn-anfrage.unverbindlich { background: #E08A00; }
 </style>
 </head>
 <body>
 <div class="widget">
   <p class="widget-title">Verfügbarkeit &amp; Preis prüfen</p>
-  <p class="widget-sub">Mietbeginn und Rückgabetag wählen – Preis wird sofort angezeigt.</p>
+  <p class="widget-sub">Zeitraum und Fahrzeug wählen – Verfügbarkeit wird sofort geprüft.</p>
 
+  <!-- Schritt 1: Datum -->
+  <p class="section-label">1. Mietzeitraum</p>
   <div class="date-row">
     <div class="field-group">
       <label for="von">Mietbeginn</label>
@@ -67,17 +93,73 @@ input[type="date"]:focus { border-color: #1B2A6B; }
     </div>
   </div>
 
-  <button class="btn-pruefen" id="btn-pruefen" onclick="checkAvail()" disabled>
+  <div class="divider"></div>
+
+  <!-- Schritt 2: Fahrzeug -->
+  <p class="section-label">2. Fahrzeug</p>
+
+  <div class="field-group">
+    <label for="sel-marke">Fahrzeugmarke</label>
+    <select id="sel-marke" onchange="onMarkeChange()" disabled>
+      <option value="">– Bitte wählen –</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label for="sel-modell">Modell</label>
+    <select id="sel-modell" onchange="onModellChange()" disabled>
+      <option value="">– Erst Marke wählen –</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label for="sel-bj">Baujahr</label>
+    <select id="sel-bj" onchange="onFahrzeugComplete()" disabled>
+      <option value="">– Erst Modell wählen –</option>
+    </select>
+  </div>
+
+  <button class="btn-manuell" id="btn-manuell" onclick="aktiviereManuell()">
+    ✏️ Mein Fahrzeug ist nicht aufgeführt – manuell eingeben
+  </button>
+
+  <!-- Manuelle Eingabe (versteckt) -->
+  <div id="manuell-bereich" style="display:none;">
+    <div class="field-group">
+      <label for="man-marke">Marke (manuell)</label>
+      <input type="text" id="man-marke" placeholder="z.B. Volkswagen" oninput="onManuellInput()"
+        style="width:100%;padding:10px 12px;border:1.5px solid #f5c56a;border-radius:8px;font-size:14px;outline:none;">
+    </div>
+    <div class="field-group">
+      <label for="man-modell">Modell (manuell)</label>
+      <input type="text" id="man-modell" placeholder="z.B. Golf Variant" oninput="onManuellInput()"
+        style="width:100%;padding:10px 12px;border:1.5px solid #f5c56a;border-radius:8px;font-size:14px;outline:none;">
+    </div>
+    <div class="field-group">
+      <label for="man-bj">Baujahr</label>
+      <input type="number" id="man-bj" placeholder="z.B. 2021" min="1990" max="2026" oninput="onManuellInput()"
+        style="width:100%;padding:10px 12px;border:1.5px solid #f5c56a;border-radius:8px;font-size:14px;outline:none;">
+    </div>
+    <p style="font-size:11px;color:#7a4800;margin-bottom:10px;">⚠️ Bei manueller Eingabe ist die Buchung unverbindlich – wir prüfen die Kompatibilität und melden uns.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Button -->
+  <button class="btn-pruefen" id="btn-pruefen" onclick="checkAll()" disabled>
     Verfügbarkeit &amp; Preis prüfen
   </button>
 
-  <div class="status-box s-loading" id="s-loading"><span class="spinner"></span>Verfügbarkeit wird geprüft …</div>
-  <div class="status-box s-sun"     id="s-sun">Sonntage sind für Abholung und Rückgabe nicht möglich. Bitte einen anderen Tag wählen.</div>
+  <!-- Statusmeldungen -->
+  <div class="status-box s-loading" id="s-loading"><span class="spinner"></span>Wird geprüft …</div>
+  <div class="status-box s-sun"     id="s-sun">Sonntage sind nicht möglich. Bitte anderen Tag wählen.</div>
   <div class="status-box s-ok"      id="s-ok"><span class="dot dot-ok"></span><strong>Dachbox verfügbar.</strong> Für diesen Zeitraum ist eine Dachbox frei.</div>
   <div class="status-box s-low"     id="s-low"><span class="dot dot-low"></span><span id="s-low-text"></span></div>
-  <div class="status-box s-no"      id="s-no"><span class="dot dot-no"></span><strong>Keine Dachbox frei.</strong> Für diesen Zeitraum sind leider alle Dachboxen vergeben. Bitte einen anderen Zeitraum wählen.</div>
-  <div class="status-box s-err"     id="s-err">Verfügbarkeit konnte nicht geprüft werden. Bitte direkt anfragen.</div>
+  <div class="status-box s-warn"    id="s-warn"><span class="dot dot-warn"></span><span id="s-warn-text"></span></div>
+  <div class="status-box s-no"      id="s-no"><span class="dot dot-no"></span><strong>Keine Dachbox frei.</strong> Für diesen Zeitraum sind alle Dachboxen vergeben.</div>
+  <div class="status-box s-err"     id="s-err">Prüfung fehlgeschlagen. Bitte direkt anfragen.</div>
 
+  <!-- Preiskarte -->
   <div class="price-card" id="price-card">
     <div class="price-line"><span>Mietdauer</span><span id="p-days">—</span></div>
     <div class="price-line"><span>Mietpreis (inkl. Montage &amp; Demontage)</span><span id="p-base">—</span></div>
@@ -86,152 +168,304 @@ input[type="date"]:focus { border-color: #1B2A6B; }
       <span class="price-total-label">Gesamtpreis</span>
       <span class="price-total-value" id="p-total">—</span>
     </div>
-    <p class="price-note">Kaution 100 € – wird bei Übergabe per Kartenzahlung fällig und bei Rückgabe vollständig erstattet.<br>Zahlung erst nach verbindlicher Bestätigung durch DachboxING.</p>
+    <p class="price-note">Kaution 100 € – bei Übergabe per Karte, bei Rückgabe vollständig erstattet.</p>
   </div>
 
+  <!-- Hinweis -->
   <div class="notice" id="notice">
-    <strong>Hinweis:</strong> Die Anfrage ist <strong>keine sofortige Buchung.</strong> Wir prüfen nach Eingang, ob passende Dachträger für Ihr Fahrzeug vorhanden sind, und melden uns mit einer verbindlichen Bestätigung. Zahlung erst danach.
+    <strong>Hinweis:</strong> <span id="notice-text">Die Anfrage ist <strong>keine sofortige Buchung.</strong></span>
   </div>
 
+  <!-- CTA Button -->
   <a class="btn-anfrage" id="btn-anfrage" href="#" target="_blank">
     Jetzt Buchungsanfrage stellen &#8594;
   </a>
 </div>
 
 <script>
-var WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbzSh8bx5vl7H2K5h9sD0aw1SR2aHALunLJNaBaFazgJbYHvylaHDJLGF8BeVPJXtFjG/exec';
+var WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbwY6QJ-L4NE-Z9_BxnI2ROFLotnzwlanX9thYrFUBio5ZUdW-HH792ULmZI9-Jfjtzb/exec';
 var FILLOUT_URL = 'https://forms.fillout.com/t/tqg392xLGnus';
 var PREISE = {1:69,2:69,3:69,4:75,5:75,6:80,7:85,8:90,9:95,10:100,11:105,12:110,13:115,14:120};
 var WOCHENTAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 var MONATE = ['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+var manuellModus = false;
+var aktuellesModellBjVon = 1990;
+var aktuellesModellBjBis = 2026;
 
 function getPreis(t) {
   if (t <= 0) return 0;
   if (t <= 14) return PREISE[t];
   return 120 + (t - 14) * 3;
 }
-
-function parseD(s) {
-  var p = s.split('-').map(Number);
-  return new Date(p[0], p[1]-1, p[2]);
-}
-
-function daysBetween(a, b) {
-  return Math.round((parseD(b) - parseD(a)) / 86400000);
-}
-
+function parseD(s) { var p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
+function daysBetween(a, b) { return Math.round((parseD(b) - parseD(a)) / 86400000); }
 function isSunday(s) { return parseD(s).getDay() === 0; }
-
 function fmtDate(s) {
   var d = parseD(s);
   return WOCHENTAGE[d.getDay()] + ', ' + d.getDate() + '. ' + MONATE[d.getMonth()] + ' ' + d.getFullYear();
 }
-
-function todayStr() {
-  return new Date().toISOString().split('T')[0];
-}
+function today() { return new Date().toISOString().split('T')[0]; }
 
 function hideAll() {
-  var ids = ['s-loading','s-sun','s-ok','s-low','s-no','s-err','price-card','notice'];
-  for (var i = 0; i < ids.length; i++) {
-    document.getElementById(ids[i]).classList.remove('show');
-  }
-  document.getElementById('btn-anfrage').classList.remove('show');
+  ['s-loading','s-sun','s-ok','s-low','s-warn','s-no','s-err','price-card','notice'].forEach(function(id) {
+    document.getElementById(id).classList.remove('show');
+  });
+  var ab = document.getElementById('btn-anfrage');
+  ab.classList.remove('show','verbindlich','unverbindlich');
 }
+function show(id) { document.getElementById(id).classList.add('show'); }
 
-function show(id) {
-  document.getElementById(id).classList.add('show');
-}
+// ── Datum ──────────────────────────────────────────────────────────────────
 
 function onDateInput() {
   var von = document.getElementById('von').value;
   var bis = document.getElementById('bis').value;
-  var btn = document.getElementById('btn-pruefen');
-
   document.getElementById('hint-von').textContent = von ? fmtDate(von) : '';
   document.getElementById('hint-bis').textContent = bis ? fmtDate(bis) : '';
-
   if (von) {
     var minBis = new Date(parseD(von).getTime() + 86400000).toISOString().split('T')[0];
     document.getElementById('bis').min = minBis;
-    if (bis && bis <= von) {
-      document.getElementById('bis').value = '';
-      document.getElementById('hint-bis').textContent = '';
-      bis = '';
-    }
+    if (bis && bis <= von) { document.getElementById('bis').value = ''; bis = ''; }
   }
-
   hideAll();
-
-  if (von && bis && daysBetween(von, bis) >= 1) {
-    if (isSunday(von) || isSunday(bis)) {
-      show('s-sun');
-      btn.disabled = true;
-    } else {
-      btn.disabled = false;
-    }
-  } else {
-    btn.disabled = true;
-  }
+  updateButton();
 }
 
-function checkAvail() {
+// ── Marken laden ──────────────────────────────────────────────────────────
+
+(function ladeMarken() {
+  fetch(WEBAPP_URL + '?aktion=marken')
+    .then(function(r) { return r.json(); })
+    .then(function(marken) {
+      var sel = document.getElementById('sel-marke');
+      marken.forEach(function(m) {
+        var opt = document.createElement('option');
+        opt.value = m; opt.textContent = m;
+        sel.appendChild(opt);
+      });
+      sel.disabled = false;
+    })
+    .catch(function() {
+      document.getElementById('sel-marke').disabled = false;
+    });
+})();
+
+function onMarkeChange() {
+  var marke   = document.getElementById('sel-marke').value;
+  var selMod  = document.getElementById('sel-modell');
+  var selBj   = document.getElementById('sel-bj');
+
+  selMod.innerHTML = '<option value="">– Lädt... –</option>';
+  selMod.disabled  = true;
+  selBj.innerHTML  = '<option value="">– Erst Modell wählen –</option>';
+  selBj.disabled   = true;
+  hideAll();
+  updateButton();
+
+  if (!marke) { selMod.innerHTML = '<option value="">– Erst Marke wählen –</option>'; return; }
+
+  fetch(WEBAPP_URL + '?aktion=modelle&marke=' + encodeURIComponent(marke))
+    .then(function(r) { return r.json(); })
+    .then(function(modelle) {
+      selMod.innerHTML = '<option value="">– Bitte wählen –</option>';
+      modelle.forEach(function(m) {
+        var opt = document.createElement('option');
+        opt.value = m.modell;
+        opt.dataset.bjVon = m.bj_von;
+        opt.dataset.bjBis = m.bj_bis;
+        opt.textContent = m.modell;
+        selMod.appendChild(opt);
+      });
+      selMod.disabled = false;
+    });
+}
+
+function onModellChange() {
+  var selMod = document.getElementById('sel-modell');
+  var selBj  = document.getElementById('sel-bj');
+  var opt    = selMod.options[selMod.selectedIndex];
+
+  selBj.innerHTML = '<option value="">– Bitte wählen –</option>';
+  selBj.disabled  = true;
+  hideAll();
+  updateButton();
+
+  if (!selMod.value) return;
+
+  var bjVon = parseInt(opt.dataset.bjVon) || 1990;
+  var bjBis = opt.dataset.bjBis === 'aktuell' ? new Date().getFullYear() : (parseInt(opt.dataset.bjBis) || new Date().getFullYear());
+
+  aktuellesModellBjVon = bjVon;
+  aktuellesModellBjBis = bjBis;
+
+  for (var y = bjBis; y >= bjVon; y--) {
+    var o = document.createElement('option');
+    o.value = y; o.textContent = y;
+    selBj.appendChild(o);
+  }
+  selBj.disabled = false;
+}
+
+function onFahrzeugComplete() {
+  hideAll();
+  updateButton();
+}
+
+// ── Manuelle Eingabe ──────────────────────────────────────────────────────
+
+function aktiviereManuell() {
+  manuellModus = true;
+  document.getElementById('manuell-bereich').style.display = 'block';
+  document.getElementById('btn-manuell').style.display     = 'none';
+  document.getElementById('sel-marke').disabled  = true;
+  document.getElementById('sel-modell').disabled = true;
+  document.getElementById('sel-bj').disabled     = true;
+  updateButton();
+}
+
+function onManuellInput() {
+  hideAll();
+  updateButton();
+}
+
+// ── Button-State ──────────────────────────────────────────────────────────
+
+function updateButton() {
   var von = document.getElementById('von').value;
   var bis = document.getElementById('bis').value;
   var btn = document.getElementById('btn-pruefen');
 
-  if (!von || !bis) return;
-  var tage = daysBetween(von, bis);
-  if (tage < 1) return;
+  var datumOk    = von && bis && daysBetween(von, bis) >= 1 && !isSunday(von) && !isSunday(bis);
+  var fahrzeugOk = false;
 
+  if (manuellModus) {
+    fahrzeugOk = document.getElementById('man-marke').value.trim().length > 1 &&
+                 document.getElementById('man-modell').value.trim().length > 1 &&
+                 document.getElementById('man-bj').value.length === 4;
+  } else {
+    fahrzeugOk = document.getElementById('sel-marke').value &&
+                 document.getElementById('sel-modell').value &&
+                 document.getElementById('sel-bj').value;
+  }
+
+  if (datumOk && !isSunday(von) && !isSunday(bis)) {
+    btn.disabled = !fahrzeugOk;
+  } else {
+    btn.disabled = true;
+    if (von && bis && (isSunday(von) || isSunday(bis))) show('s-sun');
+  }
+}
+
+// ── Prüfung ───────────────────────────────────────────────────────────────
+
+function checkAll() {
+  var von = document.getElementById('von').value;
+  var bis = document.getElementById('bis').value;
+  var btn = document.getElementById('btn-pruefen');
+
+  var marke, modell, bj;
+
+  if (manuellModus) {
+    marke  = document.getElementById('man-marke').value.trim().toUpperCase();
+    modell = document.getElementById('man-modell').value.trim().toUpperCase();
+    bj     = document.getElementById('man-bj').value;
+  } else {
+    marke  = document.getElementById('sel-marke').value;
+    modell = document.getElementById('sel-modell').value;
+    bj     = document.getElementById('sel-bj').value;
+  }
+
+  var tage = daysBetween(von, bis);
   hideAll();
   show('s-loading');
   btn.disabled = true;
 
-  fetch(WEBAPP_URL + '?von=' + von + '&bis=' + bis)
-    .then(function(resp) {
-      if (!resp.ok) throw new Error('HTTP ' + resp.status);
-      return resp.json();
-    })
+  var url = WEBAPP_URL + '?von=' + von + '&bis=' + bis +
+            '&marke=' + encodeURIComponent(marke) +
+            '&modell=' + encodeURIComponent(modell) +
+            '&bj='    + encodeURIComponent(bj);
+
+  fetch(url)
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function(data) {
       if (data.error) throw new Error(data.error);
-      var frei = data.frei;
       hideAll();
 
-      if (frei <= 0) {
-        show('s-no');
-      } else {
-        var preis = getPreis(tage);
-        document.getElementById('p-days').textContent = tage + (tage === 1 ? ' Tag' : ' Tage');
-        document.getElementById('p-base').textContent = preis.toFixed(2).replace('.', ',') + ' EUR';
-        document.getElementById('p-total').textContent = preis.toFixed(2).replace('.', ',') + ' EUR';
-        show('price-card');
+      var frei       = data.frei;
+      var traeger    = data.traeger || null;
+      var buchungsart = traeger ? traeger.buchungsart : (manuellModus ? 'unverbindlich' : null);
 
-        if (frei <= 2) {
-          document.getElementById('s-low-text').innerHTML = '<strong>Nur noch ' + frei + ' Dachbox' + (frei === 1 ? '' : 'en') + ' verfügbar</strong> – jetzt Anfrage stellen!';
-          show('s-low');
-        } else {
-          show('s-ok');
-        }
+      // Dachbox nicht verfügbar
+      if (frei <= 0) { show('s-no'); btn.disabled = false; return; }
 
-        show('notice');
-        var anfBtn = document.getElementById('btn-anfrage');
-        anfBtn.href = FILLOUT_URL + '?von=' + von + '&bis=' + bis;
-        anfBtn.classList.add('show');
+      // Träger nicht buchbar
+      if (traeger && traeger.buchungsart === 'nicht_buchbar') {
+        document.getElementById('s-warn-text').innerHTML =
+          '<strong>Leider kein passender Dachträger</strong> für dieses Fahrzeug in unserem Bestand. ' + traeger.hinweis;
+        show('s-warn');
+        btn.disabled = false;
+        return;
       }
-      btn.disabled = false;
+
+      // Preis anzeigen
+      var preis = getPreis(tage);
+      document.getElementById('p-days').textContent = tage + (tage === 1 ? ' Tag' : ' Tage');
+      document.getElementById('p-base').textContent = preis.toFixed(2).replace('.', ',') + ' EUR';
+      document.getElementById('p-total').textContent = preis.toFixed(2).replace('.', ',') + ' EUR';
+      show('price-card');
+
+      // Status anzeigen
+      if (frei <= 2) {
+        document.getElementById('s-low-text').innerHTML =
+          '<strong>Nur noch ' + frei + ' Dachbox' + (frei === 1 ? '' : 'en') + ' verfügbar</strong>';
+        if (traeger) document.getElementById('s-low-text').innerHTML += ' – ' + traeger.hinweis;
+        show('s-low');
+      } else {
+        show('s-ok');
+      }
+
+      // Notice + Buchungsart
+      var noticeText = '';
+      var btnClass   = '';
+
+      if (buchungsart === 'verbindlich') {
+        noticeText = 'Nach Eingang Ihrer Anfrage bestätigen wir schnellstmöglich verbindlich. Zahlung erst nach Bestätigung.';
+        btnClass   = 'verbindlich';
+      } else {
+        noticeText = '<strong>Unverbindliche Anfrage:</strong> Wir prüfen die Fahrzeugkompatibilität und melden uns mit einer Bestätigung. Zahlung erst danach.';
+        if (traeger && traeger.hinweis) noticeText += '<br><small>' + traeger.hinweis + '</small>';
+        btnClass = 'unverbindlich';
+      }
+
+      document.getElementById('notice-text').innerHTML = noticeText;
+      show('notice');
+
+      // CTA Button
+      var anfBtn = document.getElementById('btn-anfrage');
+      var params = '?von=' + von + '&bis=' + bis +
+                   '&marke=' + encodeURIComponent(marke) +
+                   '&modell=' + encodeURIComponent(modell) +
+                   '&baujahr=' + encodeURIComponent(bj) +
+                   '&buchungsart=' + encodeURIComponent(buchungsart || 'unverbindlich');
+      anfBtn.href = FILLOUT_URL + params;
+      anfBtn.textContent = buchungsart === 'verbindlich'
+        ? 'Jetzt verbindlich anfragen \u2192'
+        : 'Jetzt unverbindlich anfragen \u2192';
+      anfBtn.className = 'btn-anfrage show ' + (buchungsart === 'verbindlich' ? 'verbindlich' : 'unverbindlich');
     })
     .catch(function(e) {
       hideAll();
       show('s-err');
+      console.warn(e);
+    })
+    .finally(function() {
       btn.disabled = false;
-      console.warn('Fehler:', e);
     });
 }
 
-// Mindestdatum beim Laden setzen
+// Mindestdatum setzen
 (function() {
-  var t = todayStr();
+  var t = today();
   document.getElementById('von').min = t;
   document.getElementById('bis').min = t;
 })();
