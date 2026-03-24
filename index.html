@@ -189,6 +189,7 @@ var PREISE = {1:69,2:69,3:69,4:75,5:75,6:80,7:85,8:90,9:95,10:100,11:105,12:110,
 var WOCHENTAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 var MONATE = ['Jan','Feb','Maer','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 var manuellModus = false;
+var alleModelle = [];
 var aktuellesModellBjVon = 1990;
 var aktuellesModellBjBis = 2026;
 
@@ -251,64 +252,77 @@ function onDateInput() {
 })();
 
 function onMarkeChange() {
-  var marke   = document.getElementById('sel-marke').value;
-  var selMod  = document.getElementById('sel-modell');
-  var selBj   = document.getElementById('sel-bj');
+  var marke  = document.getElementById('sel-marke').value;
+  var selBj  = document.getElementById('sel-bj');
+  var selMod = document.getElementById('sel-modell');
 
-  selMod.innerHTML = '<option value="">– Lädt... –</option>';
-  selMod.disabled  = true;
-  selBj.innerHTML  = '<option value="">– Erst Modell wählen –</option>';
+  selBj.innerHTML  = '<option value="">– Lädt... –</option>';
   selBj.disabled   = true;
+  selMod.innerHTML = '<option value="">– Erst Baujahr wählen –</option>';
+  selMod.disabled  = true;
+  alleModelle      = [];
   hideAll();
   updateButton();
 
-  if (!marke) { selMod.innerHTML = '<option value="">– Erst Marke wählen –</option>'; return; }
+  if (!marke) {
+    selBj.innerHTML = '<option value="">– Erst Marke wählen –</option>';
+    return;
+  }
 
   fetch(WEBAPP_URL + '?aktion=modelle&marke=' + encodeURIComponent(marke))
     .then(function(r) { return r.json(); })
     .then(function(modelle) {
-      selMod.innerHTML = '<option value="">– Bitte wählen –</option>';
-      modelle.forEach(function(m) {
-        var opt = document.createElement('option');
-        var label = m.modell + (m.typ ? " " + m.typ : "");
-        opt.value = m.modell + (m.typ ? "|" + m.typ : "");
-        opt.dataset.typ = m.typ || "";
-        opt.dataset.bjVon = m.bj_von;
-        opt.dataset.bjBis = m.bj_bis;
-        opt.textContent = label;
-        selMod.appendChild(opt);
-      });
-      selMod.disabled = false;
+      alleModelle = modelle;
+      var maxBj = new Date().getFullYear();
+      var minBj = maxBj - 20;
+      selBj.innerHTML = '<option value="">– Bitte wählen –</option>';
+      for (var y = maxBj; y >= minBj; y--) {
+        var hatModell = modelle.some(function(m) {
+          var von = parseInt(m.bj_von) || 0;
+          var bis = m.bj_bis === 'aktuell' ? 9999 : (parseInt(m.bj_bis) || 9999);
+          return y >= von && y <= bis;
+        });
+        if (hatModell) {
+          var o = document.createElement('option');
+          o.value = y; o.textContent = y;
+          selBj.appendChild(o);
+        }
+      }
+      selBj.disabled = false;
     });
 }
 
-function onModellChange() {
+function onBjChange() {
+  var bj     = parseInt(document.getElementById('sel-bj').value);
   var selMod = document.getElementById('sel-modell');
-  var selBj  = document.getElementById('sel-bj');
-  var opt    = selMod.options[selMod.selectedIndex];
 
-  selBj.innerHTML = '<option value="">– Bitte wählen –</option>';
-  selBj.disabled  = true;
+  selMod.innerHTML = '<option value="">– Bitte wählen –</option>';
+  selMod.disabled  = true;
   hideAll();
   updateButton();
 
-  if (!selMod.value) return;
+  if (!bj) return;
 
-  var bjVon = parseInt(opt.dataset.bjVon) || 1990;
-  var bjBis = opt.dataset.bjBis === 'aktuell' ? new Date().getFullYear() : (parseInt(opt.dataset.bjBis) || new Date().getFullYear());
+  var passend = alleModelle.filter(function(m) {
+    var von = parseInt(m.bj_von) || 0;
+    var bis = m.bj_bis === 'aktuell' ? 9999 : (parseInt(m.bj_bis) || 9999);
+    return bj >= von && bj <= bis;
+  });
 
-  aktuellesModellBjVon = bjVon;
-  aktuellesModellBjBis = bjBis;
+  passend.sort(function(a, b) { return a.modell.localeCompare(b.modell); });
 
-  for (var y = bjBis; y >= bjVon; y--) {
-    var o = document.createElement('option');
-    o.value = y; o.textContent = y;
-    selBj.appendChild(o);
-  }
-  selBj.disabled = false;
+  passend.forEach(function(m) {
+    var opt   = document.createElement('option');
+    var label = m.modell + (m.typ ? ' ' + m.typ : '');
+    opt.value = m.modell + (m.typ ? '|' + m.typ : '');
+    opt.textContent = label;
+    selMod.appendChild(opt);
+  });
+
+  selMod.disabled = passend.length === 0;
 }
 
-function onFahrzeugComplete() {
+function onModellChange() {
   hideAll();
   updateButton();
 }
