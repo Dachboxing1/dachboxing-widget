@@ -458,9 +458,11 @@ function checkAll() {
 
       // CTA Button
       var anfBtn = document.getElementById('btn-anfrage');
+      // Modell bereinigen: "GLC|X254" → "GLC (X254)"
+      var modellSauber = modell.replace('|', ' ').trim();
       var params = '?von=' + von + '&bis=' + bis +
                    '&marke=' + encodeURIComponent(marke) +
-                   '&modell=' + encodeURIComponent(modell) +
+                   '&modell=' + encodeURIComponent(modellSauber) +
                    '&baujahr=' + encodeURIComponent(bj) +
                    '&buchungsart=' + encodeURIComponent(buchungsart || 'unverbindlich');
       anfBtn.href = FILLOUT_URL + params;
