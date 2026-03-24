@@ -445,10 +445,10 @@ function checkAll() {
       var btnClass   = '';
 
       if (buchungsart === 'verbindlich') {
-        noticeText = 'Nach Eingang Ihrer Anfrage bestätigen wir schnellstmöglich verbindlich. Zahlung erst nach Bestätigung.';
+        noticeText = 'Ihre Buchungsanfrage ist verbindlich. Wir melden uns kurzfristig mit Rechnung, Zahlungslink sowie Terminvorschlägen für Montage und Demontage. Zahlung erst nach Bestätigung.';
         btnClass   = 'verbindlich';
       } else {
-        noticeText = '<strong>Unverbindliche Anfrage:</strong> Wir prüfen die Fahrzeugkompatibilität und melden uns mit einer Bestätigung. Zahlung erst danach.';
+        noticeText = '<strong>Unverbindliche Anfrage:</strong> Wir prüfen die Kompatibilität des Dachträgers mit Ihrem Fahrzeug und melden uns mit einer Bestätigung sowie Terminvorschlägen für Montage und Demontage. Zahlung erst nach Bestätigung.';
         if (traeger && traeger.hinweis) noticeText += '<br><small>' + traeger.hinweis + '</small>';
         btnClass = 'unverbindlich';
       }
