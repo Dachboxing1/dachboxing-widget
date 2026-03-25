@@ -417,7 +417,7 @@ function checkAll() {
       // Träger nicht buchbar
       if (traeger && traeger.buchungsart === 'nicht_buchbar') {
         document.getElementById('s-warn-text').innerHTML =
-          '<strong>Leider kein passender Dachträger</strong> für dieses Fahrzeug in unserem Bestand. ' + traeger.hinweis;
+          '<strong>Leider kein passender Dachträger</strong> für dieses Fahrzeug in unserem Bestand verfügbar.';
         show('s-warn');
         btn.disabled = false;
         return;
@@ -433,8 +433,7 @@ function checkAll() {
       // Status anzeigen
       if (frei <= 2) {
         document.getElementById('s-low-text').innerHTML =
-          '<strong>Nur noch ' + frei + ' Dachbox' + (frei === 1 ? '' : 'en') + ' verfügbar</strong>';
-        if (traeger) document.getElementById('s-low-text').innerHTML += ' – ' + traeger.hinweis;
+          '<strong>Nur noch ' + frei + ' Dachbox' + (frei === 1 ? '' : 'en') + ' verfügbar.</strong> Jetzt schnell anfragen!';
         show('s-low');
       } else {
         show('s-ok');
@@ -449,7 +448,7 @@ function checkAll() {
         btnClass   = 'verbindlich';
       } else {
         noticeText = '<strong>Unverbindliche Anfrage:</strong> Wir prüfen die Kompatibilität des Dachträgers mit Ihrem Fahrzeug und melden uns mit einer Bestätigung sowie Terminvorschlägen für Montage und Demontage. Zahlung erst nach Bestätigung.';
-        if (traeger && traeger.hinweis) noticeText += '<br><small>' + traeger.hinweis + '</small>';
+
         btnClass = 'unverbindlich';
       }
 
@@ -460,10 +459,14 @@ function checkAll() {
       var anfBtn = document.getElementById('btn-anfrage');
       // Modell bereinigen: "GLC|X254" → "GLC (X254)"
       var modellSauber = modell.replace('|', ' ').trim();
+      var dachform  = traeger ? (traeger.dachform  || '') : '';
+      var relingart = traeger ? (traeger.relingart || '') : '';
       var params = '?von=' + von + '&bis=' + bis +
-                   '&marke=' + encodeURIComponent(marke) +
-                   '&modell=' + encodeURIComponent(modellSauber) +
-                   '&baujahr=' + encodeURIComponent(bj) +
+                   '&marke='     + encodeURIComponent(marke) +
+                   '&modell='    + encodeURIComponent(modellSauber) +
+                   '&baujahr='   + encodeURIComponent(bj) +
+                   '&dachform='  + encodeURIComponent(dachform) +
+                   '&relingart=' + encodeURIComponent(relingart) +
                    '&buchungsart=' + encodeURIComponent(buchungsart || 'unverbindlich');
       anfBtn.href = FILLOUT_URL + params;
       anfBtn.textContent = buchungsart === 'verbindlich'
