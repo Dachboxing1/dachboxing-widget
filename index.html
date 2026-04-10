@@ -199,7 +199,7 @@ function getPreis(t) {
   return 120 + (t - 14) * 3;
 }
 function parseD(s) { var p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
-function daysBetween(a, b) { return Math.round((parseD(b) - parseD(a)) / 86400000); }
+function daysBetween(a, b) { return Math.round((parseD(b) - parseD(a)) / 86400000) + 1; }
 function isSunday(s) { return parseD(s).getDay() === 0; }
 function fmtDate(s) {
   var d = parseD(s);
