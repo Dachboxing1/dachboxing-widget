@@ -414,14 +414,7 @@ function checkAll() {
       // Dachbox nicht verfügbar
       if (frei <= 0) { show('s-no'); btn.disabled = false; return; }
 
-      // Träger nicht buchbar
-      if (traeger && traeger.buchungsart === 'nicht_buchbar') {
-        document.getElementById('s-warn-text').innerHTML =
-          '<strong>Leider kein passender Dachträger</strong> für dieses Fahrzeug in unserem Bestand verfügbar.';
-        show('s-warn');
-        btn.disabled = false;
-        return;
-      }
+      // Alle Fahrzeuge können jetzt anfragen (NR = unverbindlich mit manueller Prüfung)
 
       // Preis anzeigen
       var preis = getPreis(tage);
